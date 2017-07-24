@@ -1,12 +1,10 @@
 <template lang="html">
-  <div id="posts">
+  <div id="posts">    
+    <h3>News from the Shaft</h3>
     <div class="well well-lg">
-      <h3>News from the Shaft</h3>
-      <div class="well well-lg">
-        <!-- posts append here, then add votes in it -->
-        <div class="well" id="votes">
+      <!-- posts append here, then add votes in it -->
+      <div class="well" id="votes">
 
-        </div>
       </div>
     </div>
   </div>
