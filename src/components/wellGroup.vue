@@ -1,5 +1,6 @@
 <template>
-  <div class="well well-lg" id="wellgroup">
+  <div id="wellgroup">
+    <!-- Move this form to a modal or something -->
     <div class="well well-lg">
       <label for="username-input">Username</label>
       <input type="text" name="username-input" id="username">

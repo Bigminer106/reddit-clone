@@ -6,9 +6,9 @@
   </div>
 </template>
 <script>
-import navigation from './components/navigation.vue'
-import well from './components/wellGroup.vue'
-import posts from './components/Posts.vue'
+import navigation from './components/navigation'
+import well from './components/wellGroup'
+import posts from './components/Posts'
 export default {
   name: 'app',
   components: {

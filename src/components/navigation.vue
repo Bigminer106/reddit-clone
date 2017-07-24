@@ -3,7 +3,8 @@
     <nav class="navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
-          <h2><a href="#" class="return">The Mine</a></h2><br>
+          <h1><a href="#" class="return">The Mine</a></h1><br>
+          <!-- Move the button right -->
           <button type="button" name="Add Post" class="btn">Add Post</button><br><br>
         </div>
       </div>
@@ -18,7 +19,7 @@ export default {
 </script>
 
 <style>
-h2 {
+h1 {
   text-decoration: underline;
 }
 </style>
