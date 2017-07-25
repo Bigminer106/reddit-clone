@@ -4,7 +4,7 @@
   <nav class="navbar navbar-default">
     <div class="container">
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false" v-on:click="toggleForm()">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -37,50 +37,52 @@
         </select>
       </div>
     </ul>
-    
-    <div class="row" v-show="opened">
-      <div class="col-md-8">
 
+    <div class="row" v-show="opened">
+
+      <div class="col-md-8">
         <form>
-          <div>
+          <div class="form-group">
             <label for="title">Title</label>
-            <input id="title" class="form-control">
-          </div>
-          <div>
-            <label for="body">Body</label>
-            <textarea id="body" class="form-control"></textarea>
-          </div>
-          <div>
-            <label for="author">Author</label>
-            <input id="author" class="form-control">
-          </div>
-          <div>
-            <label for="image-url">Image URL</label>
-            <input id="image-url" class="form-control">
+            <input type="text" id="title" class="form-control" v-model="newPost.title">
           </div>
           <div class="form-group">
-            <button type="submit" class="btn btn-primary" v-on:click="addPost()">
+            <label for="body">Body</label>
+            <textarea type="text" id="body" class="form-control" v-model="newPost.body"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="author">Author</label>
+            <input type="text" id="author" class="form-control" v-model="newPost.author">
+          </div>
+          <div class="form-group">
+            <label for="image-url">Image URL</label>
+            <input type="url" id="image-url" class="form-control" v-model="newPost.image">
+          </div>
+          <div class="form-group">
+            <button type="button" class="btn btn-primary" v-on:click="submitForm()">
               Create Post
             </button>
           </div>
         </form>
-
       </div>
-    </div>
-    <h2>News from the Shaft</h2>
-    <div class="row">
-      <div class="col-md-12">
 
+    </div>
+
+    <h2>News from the Shaft</h2>
+
+    <div class="row">
+
+      <div class="col-md-12">
         <div class="well" v-for='post in posts'>
           <div class="media-left">
-            <img src="" class="media-object" alt="lorempixel Crap">
+            <img v-bind:src="post.image" class="media-object">
           </div>
           <div class="media-body">
             <h4 class="media-heading">
               {{post.title}}
-              <a><i class="glyphicon glyphicon-arrow-up" v-on:click="votesUp()"></i></a>
-              <a><i class="glyphicon glyphicon-arrow-down" v-on:click="votesDown()"></i></a>
-              Votes: {{value}}
+              <a><i class="glyphicon glyphicon-arrow-up" v-on:click="post.value++"></i></a>
+              <a><i class="glyphicon glyphicon-arrow-down" v-on:click="post.value > 0 ? post.value-- : post.value"></i></a>
+              Votes: {{post.value}}
             </h4>
             <div class="text-right">
               {{post.author}}
@@ -99,22 +101,22 @@
               <div class="col-md-offset-1">
                 <hr>
                 <p>
-                  Comment text
+                  Comment Text
                 </p>
                 <form class="form-inline">
                   <div class="form-group">
                     <input class="form-control">
                   </div>
                   <div class="form-group">
-                    <input type="submit" class="btn btn-primary">
+                    <button type="button" class="btn btn-primary">Submit</button>
                   </div>
                 </form>
               </div>
             </div>
           </div>
         </div>
-
       </div>
+
     </div>
 
   </main>
@@ -128,30 +130,48 @@ export default {
   data() {
     return {
       opened: false,
-      value: 0,
       posts: [
         {
           title: 'Slipsum',
           author: 'S.L. Jackson',
-          // image: "https://lorempixel.com/200/400/",
-          body: "Now that we know who you are, I know who I am. I'm not a mistake! It all makes sense! In a comic, you know how you can tell who the arch-villain's going to be? He's the exact opposite of the hero. And most times they're friends, like you and me! I should've known way back when... You know why, David? Because of the kids. They called me Mr Glass."
+          image: "https://lorempixel.com/100/100/",
+          body: "Now that we know who you are, I know who I am. I'm not a mistake! It all makes sense! In a comic, you know how you can tell who the arch-villain's going to be? He's the exact opposite of the hero. And most times they're friends, like you and me! I should've known way back when... You know why, David? Because of the kids. They called me Mr Glass.",
+          value: 0
         },
         {
           title: 'Slipsum',
           author: 'S.L. Jackson',
-          // image: "https://lorempixel.com/200/400/",
-          body: "You think water moves fast? You should see ice. It moves like it has a mind. Like it knows it killed the world once and got a taste for murder. After the avalanche, it took us a week to climb out. Now, I don't know exactly when we turned on each other, but I know that seven of us survived the slide... and only five made it out. Now we took an oath, that I'm breaking now. We said we'd say it was the snow that killed the other two, but it wasn't. Nature is lethal but it doesn't hold a candle to man."
+          image: "https://lorempixel.com/100/100/",
+          body: "You think water moves fast? You should see ice. It moves like it has a mind. Like it knows it killed the world once and got a taste for murder. After the avalanche, it took us a week to climb out. Now, I don't know exactly when we turned on each other, but I know that seven of us survived the slide... and only five made it out. Now we took an oath, that I'm breaking now. We said we'd say it was the snow that killed the other two, but it wasn't. Nature is lethal but it doesn't hold a candle to man.",
+          value: 2
         },
         {
           title: 'Slipsum',
           author: 'S.L. Jackson',
-          // image: "https://lorempixel.com/200/400/",
-          body: "Well, the way they make shows is, they make one show. That show's called a pilot. Then they show that show to the people who make shows, and on the strength of that one show they decide if they're going to make more shows. Some pilots get picked and become television programs. Some don't, become nothing. She starred in one of the ones that became nothing."
+          image: "https://lorempixel.com/100/100/",
+          body: "Well, the way they make shows is, they make one show. That show's called a pilot. Then they show that show to the people who make shows, and on the strength of that one show they decide if they're going to make more shows. Some pilots get picked and become television programs. Some don't, become nothing. She starred in one of the ones that became nothing.",
+          value: 4
         }
-      ]
+      ],
+      newPost: {
+        title: '',
+        author: '',
+        image: '',
+        body: '',
+        value: 0
+      },
+      // comments: [
+      //   {
+      //     comment: 'This is a comment'
+      //   }
+      // ],
+      // newComment: {
+      //   comment: ''
+      // }
     }
   },
   methods: {
+    // Toggles the form to add a post
     toggleForm() {
       if (this.opened == false) {
         this.opened = true;
@@ -159,23 +179,16 @@ export default {
         this.opened = false;
       }
     },
-    votesUp() {
-      if (this.value >= 0) {
-        this.value++;
-      };
-    },
-    votesDown() {
-      if (this.value > 0) {
-        this.value--;
-      } else {
-        alert("Can't have less than 0 votes!");
-      };
-    },
-    addPost() {
-
+    submitForm() {
+      this.posts.push(this.newPost);
+      this.toggleForm();
     }
+    // submitComment() {
+    //   this.comments.push(this.newComment);
+    // }
   }
 }
+
 </script>
 
 <style>
