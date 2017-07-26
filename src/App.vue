@@ -100,23 +100,23 @@
                 <hr>
                 <h4>{{comment.commentAuthor}}</h4>
                 <p>{{comment.comment}}</p>
-                <div>
-                  <p><a class="btn btn-info" v-on:click="newCommentAdd" v-show="addComment">Add Comment</a></p>
-                </div>
-                <form class="form-inline" v-show="commentOpened">
-                  <div class="form-group">
-                    <label for="#commentAuthor">Author:</label>
-                    <input class="form-control" id="commentAuthor" v-model="newComment.commentAuthor">
-                  </div>
-                  <div class="form-group">
-                    <label for="#comment">Comment:</label>
-                    <input class="form-control" id="comment" v-model="newComment.comment">
-                  </div>
-                  <div class="form-group">
-                    <button type="button" class="btn btn-primary" v-on:click="submitComment">Submit</button>
-                  </div>
-                </form>
               </div>
+            </div>
+            <form class="form-inline" v-show="commentOpened">
+              <div class="form-group">
+                <label for="#commentAuthor">Author:</label>
+                <input class="form-control" id="commentAuthor" v-model="newComment.commentAuthor">
+              </div>
+              <div class="form-group">
+                <label for="#comment">Comment:</label>
+                <input class="form-control" id="comment" v-model="newComment.comment">
+              </div>
+              <div class="form-group">
+                <button type="button" class="btn btn-primary" v-on:click="submitComment">Submit</button>
+              </div>
+            </form>
+            <div>
+              <p><a class="btn btn-info" v-on:click="newCommentAdd" v-show="addComment">Add Comment</a></p>
             </div>
           </div>
         </div>
@@ -230,7 +230,7 @@ export default {
     commentNumber() {
       if (this.comments.length === 1) {
         return this.comments.length + ' comment';
-      } else {
+      } else if (this.comments.length === 0 || this.comments.length > 1) {
         return this.comments.length + ' comments';
       };
     },
