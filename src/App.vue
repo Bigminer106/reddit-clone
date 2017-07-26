@@ -42,21 +42,21 @@
 
       <div class="col-md-8">
         <form>
-          <div class="form-group">
+          <div class="form-group" v-bind:class="{ 'has-error': blur.emptyTitle && isEmpty(newPost.title) }">
             <label for="title">Title</label>
-            <input type="text" id="title" class="form-control" v-model="newPost.title">
+            <input type="text" id="title" class="form-control" v-model="newPost.title" v-on:blur="blur.emptyTitle = true">
           </div>
-          <div class="form-group">
+          <div class="form-group" v-bind:class="{ 'has-error': blur.emptyBody && isEmpty(newPost.body) }">
             <label for="body">Body</label>
-            <textarea type="text" id="body" class="form-control" v-model="newPost.body"></textarea>
+            <textarea type="text" id="body" class="form-control" v-model="newPost.body" v-on:blur="blur.emptyBody = true"></textarea>
           </div>
-          <div class="form-group">
+          <div class="form-group"  v-bind:class="{ 'has-error': blur.emptyAuthor && isEmpty(newPost.author) }">
             <label for="author">Author</label>
-            <input type="text" id="author" class="form-control" v-model="newPost.author">
+            <input type="text" id="author" class="form-control" v-model="newPost.author" v-on:blur="blur.emptyAuthor = true">
           </div>
-          <div class="form-group">
+          <div class="form-group"  v-bind:class="{ 'has-error': blur.emptyImage && isEmpty(newPost.image) }">
             <label for="image-url">Image URL</label>
-            <input type="url" id="image-url" class="form-control" v-model="newPost.image">
+            <input type="url" id="image-url" class="form-control" v-model="newPost.image" v-on:blur="blur.emptyImage = true">
           </div>
           <div class="form-group">
             <button type="button" class="btn btn-primary" v-on:click="submitForm()">
@@ -91,24 +91,29 @@
               {{post.body}}
             </p>
             <div>
-              Some time ago |
+               <!-- Time since Post | -->
               <i class="glyphicon glyphicon-comment"></i>
-              <a>
-                Some comments
-              </a>
+              <a v-on:click="showComments">{{commentNumber()}}</a>
             </div>
-            <div class="row">
-              <div class="col-md-offset-1">
+            <div class="row" v-for="comment in comments">
+              <div class="col-md-offset-1" v-show="commentsShown">
                 <hr>
-                <p>
-                  Comment Text
-                </p>
-                <form class="form-inline">
+                <h4>{{comment.commentAuthor}}</h4>
+                <p>{{comment.comment}}</p>
+                <div>
+                  <p><a class="btn btn-info" v-on:click="newCommentAdd" v-show="addComment">Add Comment</a></p>
+                </div>
+                <form class="form-inline" v-show="commentOpened">
                   <div class="form-group">
-                    <input class="form-control">
+                    <label for="#commentAuthor">Author:</label>
+                    <input class="form-control" id="commentAuthor" v-model="newComment.commentAuthor">
                   </div>
                   <div class="form-group">
-                    <button type="button" class="btn btn-primary">Submit</button>
+                    <label for="#comment">Comment:</label>
+                    <input class="form-control" id="comment" v-model="newComment.comment">
+                  </div>
+                  <div class="form-group">
+                    <button type="button" class="btn btn-primary" v-on:click="submitComment">Submit</button>
                   </div>
                 </form>
               </div>
@@ -160,14 +165,25 @@ export default {
         body: '',
         value: 0
       },
-      // comments: [
-      //   {
-      //     comment: 'This is a comment'
-      //   }
-      // ],
-      // newComment: {
-      //   comment: ''
-      // }
+      blur: {
+        emptyTitle: false,
+        emptyBody: false,
+        emptyAuthor: false,
+        emptyImage: false
+      },
+      comments: [
+        {
+          commentAuthor: 'RandoJS',
+          comment: 'FIRST'
+        }
+      ],
+      newComment: {
+        commentAuthor: '',
+        comment: ''
+      },
+      commentOpened: false,
+      addComment: true,
+      commentsShown: false
     }
   },
   methods: {
@@ -179,13 +195,52 @@ export default {
         this.opened = false;
       }
     },
+    isEmpty(value) {
+      return value === '';
+    },
     submitForm() {
-      this.posts.push(this.newPost);
-      this.toggleForm();
+      if (this.blur.emptyTitle == true || this.blur.emptyBody == true || this.blur.emptyAuthor == true || this.blur.emptyImage == true) {
+        event.preventDefault();
+        alert("All fields required.");
+      } else {
+        this.blur.title = false;
+        this.blur.body = false;
+        this.blur.author = false;
+        this.blur.image = false;
+        this.posts.push(this.newPost);
+        this.toggleForm();
+      }
+    },
+    newCommentAdd() {
+      if (this.commentOpened == false) {
+        this.commentOpened = true;
+      } else {
+        this.commentOpened = false;
+      };
+      if (this.addComment == true) {
+        this.addComment = false;
+      } else {
+        this.addComment = true;
+      };
+    },
+    submitComment() {
+      this.comments.push(this.newComment);
+      this.newCommentAdd();
+    },
+    commentNumber() {
+      if (this.comments.length === 1) {
+        return this.comments.length + ' comment';
+      } else {
+        return this.comments.length + ' comments';
+      };
+    },
+    showComments() {
+      if (this.commentsShown == false) {
+        this.commentsShown = true;
+      } else {
+        this.commentsShown = false;
+      };
     }
-    // submitComment() {
-    //   this.comments.push(this.newComment);
-    // }
   }
 }
 
